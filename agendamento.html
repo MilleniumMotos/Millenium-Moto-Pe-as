@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Agendamento - Millenium</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+        <img src="logo.jpeg" alt="Logo da Oficina">
+    </div>
+<h1>Agendamento</h1></header>
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="produtos.html">Produtos</a>
+    <a href="contatos.html">Imformações</a>
+  </nav>
+  
+  <br>
+  
+  <p1> preencha os campos abaixo e solicite o seu agendamento com a millenium moto peças </p1>
+<br>
+
+
+  <main>
+  <br>
+    <form id="formAgendamento">
+      <label>Nome:</label>
+      <input type="text" name="nome" required>
+
+      <label>Serviço desejado:</label>
+      <select name="servico">
+        <option>Revisão</option>
+        <option>Reparo</option>
+        <option>Lavagem</option>
+      </select>
+
+      <label>Data:</label>
+      <input type="date" name="data" required>
+
+      <label>Descrição / Observações:</label>
+      <textarea name="obs" rows="4"></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </main>
+
+  <footer><p>© 2025 Millenium</p></footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
