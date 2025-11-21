@@ -1,174 +1,161 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - Millenium Moto Peças</title>
     <link rel="stylesheet" href="style.css">
 
     <style>
+        body {
+            background: #f5f5f5;
+            font-family: "Poppins", sans-serif;
+        }
+
+        header {
+            background: #0b9b4a;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        header h1 {
+            font-size: 22px;
+        }
+
         .checkout-container {
-            width: 90%;
-            max-width: 600px;
+            max-width: 420px;
             margin: 25px auto;
             background: #fff;
-            padding: 20px;
-            border-radius: 14px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        .produto-imagem {
+        #checkout-product-image {
             width: 100%;
-            height: 220px;
-            object-fit: cover;
             border-radius: 10px;
             margin-bottom: 15px;
-            border: 2px solid #ddd;
+            height: 200px;
+            object-fit: cover;
         }
 
-        .titulo {
+        h2#checkout-product-name {
             font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        p#checkout-product-price {
+            font-size: 18px;
             font-weight: bold;
             color: #0b9b4a;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        input, select {
+        .buy-btn {
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #999;
-            margin-top: 5px;
-        }
-
-        #buscarCepBtn {
             background: #0b9b4a;
-            color: #fff;
-            padding: 10px 12px;
             border: none;
-            border-radius: 8px;
-            margin-top: 8px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 15px;
-            font-weight: bold;
-            box-shadow: 0 0 8px rgba(0,0,0,0.25);
-        }
-
-        #buscarCepBtn:hover {
-            background: #087a3b;
-        }
-
-        button.finalizar {
-            background: #0b9b4a;
             color: #fff;
-            padding: 12px;
-            width: 100%;
-            border: none;
-            margin-top: 15px;
+            padding: 13px;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.22);
+            transition: 0.2s;
+        }
+
+        .buy-btn:hover {
+            background: #087c3c;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ============================
-         CABEÇALHO CORRIGIDO
-    ============================ -->
-    <header>
-        <div class="logo-container">
-            <img src="Logo.jpeg" alt="Logo">
-        </div>
-        <h1>Millenium Moto Peças</h1>
-    </header>
+<header>
+    <img src="Logo.jpeg" alt="Logo da Oficina">
+    <h1>Finalizar Compra</h1>
+</header>
 
-    <div class="checkout-container">
+<div class="checkout-container">
 
-        <!-- IMAGEM DO PRODUTO SELECIONADO -->
-        <img id="imagemProduto" class="produto-imagem" src="" alt="Imagem do Produto">
+    <!-- IMAGEM DO PRODUTO -->
+    <img id="checkout-product-image" src="" alt="Produto">
 
-        <div class="titulo">Produto Selecionado</div>
+    <!-- NOME DO PRODUTO -->
+    <h2 id="checkout-product-name">Carregando...</h2>
 
-        <p id="produtoNome"><b>Produto:</b> </p>
-        <p id="produtoPreco"><b>Preço:</b> </p>
+    <!-- PREÇO DO PRODUTO -->
+    <p id="checkout-product-price"></p>
 
-        <hr><br>
+    <hr style="margin: 18px 0;">
 
-        <div class="titulo">Endereço de Entrega</div>
+    <!-- DADOS DO CLIENTE -->
+    <label>Nome Completo:</label>
+    <input type="text" id="nome" class="input" placeholder="Digite seu nome" required>
 
-        <!-- CEP -->
-        <div class="form-group">
-            <label>CEP</label>
-            <input type="text" id="cep" placeholder="00000-000" maxlength="9">
-            <button id="buscarCepBtn">Buscar CEP</button>
-        </div>
+    <br><br>
 
-        <!-- RUA (agora editável) -->
-        <div class="form-group">
-            <label>Rua</label>
-            <input type="text" id="rua" placeholder="Digite a rua">
-        </div>
+    <label>Telefone:</label>
+    <input type="text" id="fone" class="input" placeholder="(00) 00000-0000" required>
 
-        <!-- NUMERO (S/N permitido) -->
-        <div class="form-group">
-            <label>Número</label>
-            <input type="text" id="numero" placeholder="Ex: 123 ou S/N">
-        </div>
+    <br><br>
 
-        <!-- BAIRRO (agora editável) -->
-        <div class="form-group">
-            <label>Bairro</label>
-            <input type="text" id="bairro" placeholder="Digite o bairro">
-        </div>
+    <!-- Botão de Finalização -->
+    <button class="buy-btn" onclick="finalizarCompra()">Finalizar Pedido</button>
+</div>
 
-        <div class="form-group">
-            <label>Cidade</label>
-            <input type="text" id="cidade" readonly>
-        </div>
+<script>
+// ==== Carregar dados do produto vindo por URL ====
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
 
-        <div class="form-group">
-            <label>Estado</label>
-            <input type="text" id="estado" readonly>
-        </div>
+    const product = params.get("product");
+    const price = params.get("price");
 
-        <button class="finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+    document.getElementById("checkout-product-name").textContent = product ?? "Produto não encontrado";
+    document.getElementById("checkout-product-price").textContent = price ? `R$ ${price}` : "Preço indisponível";
 
-    </div>
+    // Lista de imagens correspondentes
+    const imagens = {
+        "Kit Transmissão Riffel Cg 160": "imagens/produto1.jpg",
+        "Bloco do Farol cg 160 2017 a 2024": "imagens/produto2.jpg",
+        "Lampada do Farol Traseiro Biz 125 2008": "imagens/produto3.jpg",
+        "Kit Transmissão Riffel Cg 125/150": "imagens/produto4.jpg",
+        "Manete cromado cg160": "imagens/produto5.jpg",
+        "Óleo Mobil Semi-sintético": "imagens/produto6.jpg",
+        "Pastilhas de freio cg 160 2022": "imagens/produto7.jpg",
+        "Frente completa cg 160 2022 a 2024": "imagens/produto8.jpg",
+        "Lampada do Farol frontal Biz 125 2008 a 2014": "imagens/produto9.jpg"
+    };
 
-    <script>
-        // Carregar produto da página anterior
-        document.addEventListener("DOMContentLoaded", () => {
-            const produto = JSON.parse(localStorage.getItem("produtoSelecionado"));
+    document.getElementById("checkout-product-image").src = imagens[product] ?? "imagens/placeholder.jpg";
+});
 
-            if (produto) {
-                document.getElementById("produtoNome").innerHTML = "<b>Produto:</b> " + produto.nome;
-                document.getElementById("produtoPreco").innerHTML = "<b>Preço:</b> R$ " + produto.preco;
-                document.getElementById("imagemProduto").src = produto.imagem;
-            }
-        });
+// ==== Função de finalizar compra ====
+function finalizarCompra() {
+    const nome = document.getElementById("nome").value;
+    const telefone = document.getElementById("fone").value;
+    const produto = document.getElementById("checkout-product-name").textContent;
+    const preco = document.getElementById("checkout-product-price").textContent;
 
-        // Buscar CEP
-        document.getElementById("buscarCepBtn").addEventListener("click", async () => {
-            const cep = document.getElementById("cep").value.replace("-", "");
+    if (nome === "" || telefone === "") {
+        alert("Por favor, preencha todos os dados.");
+        return;
+    }
 
-            if (cep.length !== 8) {
-                alert("CEP inválido!");
-                return;
-            }
+    alert(`Pedido realizado!\n\nProduto: ${produto}\nPreço: ${preco}\nNome: ${nome}\nTelefone: ${telefone}`);
+}
+</script>
 
-            const url = `https://viacep.com.br/ws/${cep}/json/`;
-
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if (data.erro) {
-                alert("CEP não encontrado."
+</body>
+</html>
