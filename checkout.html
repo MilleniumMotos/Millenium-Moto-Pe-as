@@ -2,183 +2,188 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - Millenium Moto Peças</title>
+    <link rel="stylesheet" href="style.css">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background: #2ecc71;
-            padding: 15px;
-            text-align: center;
-            color: #fff;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .container {
-            background: #fff;
+        /* Mantém o design antigo */
+        .checkout-container {
             width: 90%;
-            max-width: 900px;
-            margin: 20px auto;
+            max-width: 600px;
+            margin: 25px auto;
+            background: #fff;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
         }
 
-        h2 {
-            color: #2ecc71;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        input {
+        .produto-imagem {
             width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            margin-bottom: 18px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        #buscarCep {
-            background: #27ae60;
-            border: none;
-            padding: 10px;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            margin-bottom: 25px;
-            transition: 0.2s;
-        }
-
-        #buscarCep:hover {
-            background: #1e8c4c;
-        }
-
-        .produto-box {
-            margin-top: 25px;
-            background: #f8f8f8;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .produto-box img {
-            width: 120px;
-            height: 120px;
-            border-radius: 10px;
+            height: 220px;
             object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
             border: 2px solid #ddd;
         }
 
-        #finalizar {
+        .titulo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0b9b4a;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        input, select {
             width: 100%;
-            background: #27ae60;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #999;
+            margin-top: 5px;
+        }
+
+        #buscarCepBtn {
+            background: #0b9b4a;
             color: #fff;
-            padding: 15px;
+            padding: 10px 12px;
             border: none;
-            border-radius: 6px;
-            font-size: 18px;
+            border-radius: 8px;
+            margin-top: 8px;
             cursor: pointer;
-            margin-top: 25px;
+            width: 100%;
+            font-size: 15px;
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(0,0,0,0.25);
+        }
+
+        #buscarCepBtn:hover {
+            background: #087a3b;
+        }
+
+        button.finalizar {
+            background: #0b9b4a;
+            color: #fff;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            margin-top: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.22);
         }
     </style>
 </head>
 
 <body>
 
-    <header>Finalizar Compra</header>
+    <div class="checkout-container">
 
-    <div class="container">
+        <!-- IMAGEM DO PRODUTO SELECIONADO -->
+        <img id="imagemProduto" class="produto-imagem" src="" alt="Imagem do Produto">
 
-        <h2>Endereço</h2>
+        <div class="titulo">Produto Selecionado</div>
 
-        <label>Cep</label>
-        <input type="text" id="cep" placeholder="Digite o CEP">
+        <p id="produtoNome"><b>Produto:</b> </p>
+        <p id="produtoPreco"><b>Preço:</b> </p>
 
-        <button id="buscarCep">Buscar CEP</button>
+        <hr><br>
 
-        <label>Rua</label>
-        <input type="text" id="rua" placeholder="Informe a rua" autocomplete="off">
+        <div class="titulo">Endereço de Entrega</div>
 
-        <label>Número</label>
-        <input type="text" id="numero" placeholder="Ex: 123 ou SN">
-
-        <label>Bairro</label>
-        <input type="text" id="bairro" placeholder="Informe o bairro" autocomplete="off">
-
-        <label>Cidade</label>
-        <input type="text" id="cidade">
-
-        <label>Estado</label>
-        <input type="text" id="estado">
-
-        <h2>Produto Selecionado</h2>
-
-        <div class="produto-box">
-            <img id="imgProduto" src="" alt="Produto">
-            <div>
-                <p id="nomeProduto" style="font-size:18px; font-weight:bold;"></p>
-                <p id="precoProduto" style="color:#27ae60; font-size:17px;"></p>
-            </div>
+        <!-- CEP -->
+        <div class="form-group">
+            <label>CEP</label>
+            <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+            <button id="buscarCepBtn">Buscar CEP</button>
         </div>
 
-        <button id="finalizar">Finalizar Pedido</button>
+        <!-- RUA (agora editável) -->
+        <div class="form-group">
+            <label>Rua</label>
+            <input type="text" id="rua" placeholder="Digite a rua">
+        </div>
+
+        <!-- NUMERO (S/N permitido) -->
+        <div class="form-group">
+            <label>Número</label>
+            <input type="text" id="numero" placeholder="Ex: 123 ou S/N">
+        </div>
+
+        <!-- BAIRRO (agora editável) -->
+        <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" id="bairro" placeholder="Digite o bairro">
+        </div>
+
+        <div class="form-group">
+            <label>Cidade</label>
+            <input type="text" id="cidade" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Estado</label>
+            <input type="text" id="estado" readonly>
+        </div>
+
+        <button class="finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
 
     </div>
 
     <script>
-        // Recebe os dados do produto selecionado
-        const produto = JSON.parse(localStorage.getItem("produtoSelecionado"));
+        // Carregar produto da página anterior
+        document.addEventListener("DOMContentLoaded", () => {
+            const produto = JSON.parse(localStorage.getItem("produtoSelecionado"));
 
-        if (produto) {
-            document.getElementById("imgProduto").src = produto.imagem;
-            document.getElementById("nomeProduto").innerText = produto.nome;
-            document.getElementById("precoProduto").innerText = "Preço: R$ " + produto.preco;
-        }
+            if (produto) {
+                document.getElementById("produtoNome").innerHTML = "<b>Produto:</b> " + produto.nome;
+                document.getElementById("produtoPreco").innerHTML = "<b>Preço:</b> R$ " + produto.preco;
+                document.getElementById("imagemProduto").src = produto.imagem;
+            }
+        });
 
-        document.getElementById("buscarCep").addEventListener("click", async () => {
+        // Buscar CEP
+        document.getElementById("buscarCepBtn").addEventListener("click", async () => {
             const cep = document.getElementById("cep").value.replace("-", "");
 
             if (cep.length !== 8) {
-                alert("CEP inválido.");
+                alert("CEP inválido!");
                 return;
             }
 
-            const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-            const dados = await resp.json();
+            const url = `https://viacep.com.br/ws/${cep}/json/`;
 
-            if (dados.erro) {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.erro) {
                 alert("CEP não encontrado.");
                 return;
             }
 
-            // Preenche mas NÃO bloqueia os campos → podem ser editados manualmente
-            document.getElementById("rua").value = dados.logradouro;
-            document.getElementById("bairro").value = dados.bairro;
-            document.getElementById("cidade").value = dados.localidade;
-            document.getElementById("estado").value = dados.uf;
+            document.getElementById("rua").value = data.logradouro;
+            document.getElementById("bairro").value = data.bairro;
+            document.getElementById("cidade").value = data.localidade;
+            document.getElementById("estado").value = data.uf;
         });
 
-        document.getElementById("finalizar").addEventListener("click", () => {
-            alert("Pedido realizado com sucesso!");
-        });
+        // Finalizar compra
+        function finalizarCompra() {
+            const numero = document.getElementById("numero").value;
+
+            if (numero.trim() === "") {
+                alert("Preencha o número ou escreva S/N.");
+                return;
+            }
+
+            alert("Compra finalizada!");
+        }
     </script>
 
 </body>
-
 </html>
