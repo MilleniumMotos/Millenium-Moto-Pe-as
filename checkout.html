@@ -1,161 +1,139 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Millenium Moto Peças</title>
-    <link rel="stylesheet" href="style.css">
+/* CONFIGURAÇÃO DOS CEPS PERMITIDOS */
+const fretes = {
+    "57275000": 5,
+    "57270000": 8,
+    "57301100": 15,
+    "57275971": 0,
+    "57279000": 0
+};
 
-    <style>
-        body {
-            background: #f5f5f5;
-            font-family: "Poppins", sans-serif;
-        }
-
-        header {
-            background: #0b9b4a;
-            color: #fff;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        header img {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-
-        header h1 {
-            font-size: 22px;
-        }
-
-        .checkout-container {
-            max-width: 420px;
-            margin: 25px auto;
-            background: #fff;
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        #checkout-product-image {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        h2#checkout-product-name {
-            font-size: 20px;
-            margin-bottom: 6px;
-        }
-
-        p#checkout-product-price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0b9b4a;
-            margin-bottom: 15px;
-        }
-
-        .buy-btn {
-            width: 100%;
-            background: #0b9b4a;
-            border: none;
-            color: #fff;
-            padding: 13px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .buy-btn:hover {
-            background: #087c3c;
-        }
-    </style>
-</head>
-
-<body>
-
-<header>
-    <img src="Logo.jpeg" alt="Logo da Oficina">
-    <h1>Finalizar Compra</h1>
-</header>
-
-<div class="checkout-container">
-
-    <!-- IMAGEM DO PRODUTO -->
-    <img id="checkout-product-image" src="" alt="Produto">
-
-    <!-- NOME DO PRODUTO -->
-    <h2 id="checkout-product-name">Carregando...</h2>
-
-    <!-- PREÇO DO PRODUTO -->
-    <p id="checkout-product-price"></p>
-
-    <hr style="margin: 18px 0;">
-
-    <!-- DADOS DO CLIENTE -->
-    <label>Nome Completo:</label>
-    <input type="text" id="nome" class="input" placeholder="Digite seu nome" required>
-
-    <br><br>
-
-    <label>Telefone:</label>
-    <input type="text" id="fone" class="input" placeholder="(00) 00000-0000" required>
-
-    <br><br>
-
-    <!-- Botão de Finalização -->
-    <button class="buy-btn" onclick="finalizarCompra()">Finalizar Pedido</button>
-</div>
-
-<script>
-// ==== Carregar dados do produto vindo por URL ====
 document.addEventListener("DOMContentLoaded", () => {
+    const btnBuscaCep = document.getElementById("btnBuscaCep");
+    const btnEnviar = document.getElementById("btnEnviar");
+
+    const resNome = document.getElementById("resNome");
+    const resPreco = document.getElementById("resPreco");
+    const resFrete = document.getElementById("resFrete");
+    const resTotal = document.getElementById("resTotal");
+
+    // Carregar dados do produto vindo de produtos.html
     const params = new URLSearchParams(window.location.search);
+    const nomeProd = params.get("product");
+    const precoProd = parseFloat(params.get("price"));
 
-    const product = params.get("product");
-    const price = params.get("price");
+    resNome.textContent = nomeProd;
+    resPreco.textContent = precoProd.toFixed(2);
 
-    document.getElementById("checkout-product-name").textContent = product ?? "Produto não encontrado";
-    document.getElementById("checkout-product-price").textContent = price ? `R$ ${price}` : "Preço indisponível";
+    /* BUSCAR CEP via ViaCEP */
+    btnBuscaCep.addEventListener("click", async () => {
+        const cep = document.getElementById("cep").value.replace(/\D/g, "");
 
-    // Lista de imagens correspondentes
-    const imagens = {
-        "Kit Transmissão Riffel Cg 160": "imagens/produto1.jpg",
-        "Bloco do Farol cg 160 2017 a 2024": "imagens/produto2.jpg",
-        "Lampada do Farol Traseiro Biz 125 2008": "imagens/produto3.jpg",
-        "Kit Transmissão Riffel Cg 125/150": "imagens/produto4.jpg",
-        "Manete cromado cg160": "imagens/produto5.jpg",
-        "Óleo Mobil Semi-sintético": "imagens/produto6.jpg",
-        "Pastilhas de freio cg 160 2022": "imagens/produto7.jpg",
-        "Frente completa cg 160 2022 a 2024": "imagens/produto8.jpg",
-        "Lampada do Farol frontal Biz 125 2008 a 2014": "imagens/produto9.jpg"
-    };
+        if (cep.length !== 8) {
+            alert("Digite um CEP válido!");
+            return;
+        }
 
-    document.getElementById("checkout-product-image").src = imagens[product] ?? "imagens/placeholder.jpg";
+        // valida frete
+        if (!fretes[cep]) {
+            alert("Este CEP não está na área de entrega.");
+            btnEnviar.disabled = true;
+            return;
+        }
+
+        const url = `https://viacep.com.br/ws/${cep}/json/`;
+
+        try {
+            const r = await fetch(url);
+            const data = await r.json();
+
+            if (data.erro) {
+                alert("CEP não encontrado!");
+                return;
+            }
+
+            document.getElementById("rua").value = data.logradouro;
+            document.getElementById("bairro").value = data.bairro;
+            document.getElementById("cidade").value = data.localidade;
+
+            const frete = fretes[cep];
+            resFrete.textContent = frete.toFixed(2);
+            resTotal.textContent = (frete + precoProd).toFixed(2);
+
+            btnEnviar.disabled = false;
+
+        } catch (e) {
+            alert("Erro ao buscar CEP. Tente novamente.");
+        }
+    });
+
+    /* ENVIAR PEDIDO (WHATSAPP + EMAIL) */
+    btnEnviar.addEventListener("click", () => {
+
+        const nome = document.getElementById("nome").value;
+        const telefone = document.getElementById("telefone").value;
+        const cep = document.getElementById("cep").value;
+        const rua = document.getElementById("rua").value;
+        let numero = document.getElementById("numero").value;
+        const bairro = document.getElementById("bairro").value;
+        const cidade = document.getElementById("cidade").value;
+
+        // valida SN no número
+        if (!numero || numero.trim() === "") {
+            alert("Digite o número ou SN.");
+            return;
+        }
+
+        // converter SN automaticamente
+        numero = numero.toUpperCase();
+        if (["SN", "S/N", "S N"].includes(numero.replace(/\s/g, ""))) {
+            numero = "SN";
+        }
+
+        const frete = parseFloat(resFrete.textContent);
+        const total = parseFloat(resTotal.textContent);
+
+        // MENSAGEM
+        const msg =
+`📦 *Novo Pedido - Millenium Moto Peças*
+
+🛒 *Produto:* ${nomeProd}
+💲 *Preço:* R$ ${precoProd.toFixed(2)}
+
+🚚 *Frete:* R$ ${frete.toFixed(2)}
+💰 *Total:* R$ ${total.toFixed(2)}
+
+👤 *Cliente:* ${nome}
+📱 *Telefone:* ${telefone}
+
+📍 *Endereço:*  
+${rua}, ${numero} - ${bairro}  
+CEP: ${cep} - ${cidade}
+
+Agradecemos pela preferência!`;
+
+        /* WHATSAPP */
+        const numeroWhats = "5582996006394"; // SEU NÚMERO
+        const urlWpp = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(msg)}`;
+        window.open(urlWpp, "_blank");
+
+        /* EMAILJS */
+        emailjs.init("service_default");  
+
+        emailjs.send("service_default", "template_default", {
+            produto: nomeProd,
+            preco: precoProd.toFixed(2),
+            frete: frete.toFixed(2),
+            total: total.toFixed(2),
+            nome: nome,
+            telefone: telefone,
+            rua: rua,
+            numero: numero,
+            bairro: bairro,
+            cidade: cidade,
+            cep: cep,
+            emailDestino: "wedyslanoliveira123@gmail.com"
+        });
+
+        alert("Pedido enviado com sucesso!");
+    });
 });
-
-// ==== Função de finalizar compra ====
-function finalizarCompra() {
-    const nome = document.getElementById("nome").value;
-    const telefone = document.getElementById("fone").value;
-    const produto = document.getElementById("checkout-product-name").textContent;
-    const preco = document.getElementById("checkout-product-price").textContent;
-
-    if (nome === "" || telefone === "") {
-        alert("Por favor, preencha todos os dados.");
-        return;
-    }
-
-    alert(`Pedido realizado!\n\nProduto: ${produto}\nPreço: ${preco}\nNome: ${nome}\nTelefone: ${telefone}`);
-}
-</script>
-
-</body>
-</html>
