@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => { 
     const form = document.getElementById("formAgendamento");
     const mensagemSucesso = document.getElementById("mensagem-sucesso");
 
@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = form.querySelector("input[name='data']").value.trim();
         const obs = form.querySelector("textarea[name='obs']").value.trim();
 
-        const telefone = "558296116499";
+        // NÚMERO CORRIGIDO
+        const telefone = "5582996116499";
 
         if (!nome || !data) {
             alert("Por favor, preencha seu Nome e Data.");
@@ -30,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 Aguardo confirmação. Obrigado!`;
 
         const mensagemCodificada = encodeURIComponent(mensagem);
-
         const url = `https://wa.me/${telefone}?text=${mensagemCodificada}`;
 
         // Abre WhatsApp
@@ -44,10 +44,7 @@ Aguardo confirmação. Obrigado!`;
             mensagemSucesso.style.display = "none";
         }, 4000);
 
-        // Opcional: limpar o formulário
+        // Limpa formulário
         form.reset();
-    });
+    }); 
 });
-
-
-
