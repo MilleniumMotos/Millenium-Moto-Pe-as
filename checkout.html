@@ -7,12 +7,6 @@
     <title>Checkout - Millenium Moto Peças</title>
     <link rel="stylesheet" href="style.css">
 
-    <div class="logo-container">
-    <img src="Logo.jpeg" alt="Logo">
-	</div>
-    <h1>Millenium Moto Peças</h1>
-
-
     <style>
         .checkout-container {
             width: 90%;
@@ -86,6 +80,16 @@
 </head>
 
 <body>
+
+    <!-- ============================
+         CABEÇALHO CORRIGIDO
+    ============================ -->
+    <header>
+        <div class="logo-container">
+            <img src="Logo.jpeg" alt="Logo">
+        </div>
+        <h1>Millenium Moto Peças</h1>
+    </header>
 
     <div class="checkout-container">
 
@@ -167,30 +171,4 @@
             const data = await response.json();
 
             if (data.erro) {
-                alert("CEP não encontrado.");
-                return;
-            }
-
-            document.getElementById("rua").value = data.logradouro;
-            document.getElementById("bairro").value = data.bairro;
-            document.getElementById("cidade").value = data.localidade;
-            document.getElementById("estado").value = data.uf;
-        });
-
-        // Finalizar compra
-        function finalizarCompra() {
-            const numero = document.getElementById("numero").value;
-
-            if (numero.trim() === "") {
-                alert("Preencha o número ou escreva S/N.");
-                return;
-            }
-
-            alert("Compra finalizada!");
-        }
-    </script>
-
-</body>
-</html>
-
-
+                alert("CEP não encontrado."
